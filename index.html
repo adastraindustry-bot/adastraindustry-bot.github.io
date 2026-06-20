@@ -1131,7 +1131,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q">What's included in the price? <em class="faq-arrow">+</em></div>
-        <p class="faq-a">One price. Everything included. Your treatment at our certified partner clinic. A 5-star hotel with breakfast. Airport transfers. Daily transport between your hotel and the clinic. A dedicated translator inside the clinic. A personal coordinator who picks you up, keeps you informed at every step, and makes sure nothing is left to chance. No hidden costs. No surprises.</p>
+        <p class="faq-a">Most full smile transformations are completed for around €4,600, all-inclusive. One price. Everything included. Your treatment at our certified partner clinic. A 5-star hotel with breakfast. VIP transfers. A dedicated translator inside the clinic. A personal coordinator who picks you up, keeps you informed at every step, and makes sure nothing is left to chance. Your exact plan and final quote are confirmed after your free assessment. No hidden costs. No surprises.</p>
       </div>
       <div class="faq-item">
         <div class="faq-q">What if I need support during my stay? <em class="faq-arrow">+</em></div>
@@ -1244,14 +1244,14 @@
   // Mobile menu toggle
   function toggleMenu() {
     const menu = document.getElementById('mobileMenu');
-    menu.classList.toggle('open');
+    if (menu) menu.classList.toggle('open');
   }
 
   // Close mobile menu on outside click
   document.addEventListener('click', (e) => {
     const menu = document.getElementById('mobileMenu');
     const hamburger = document.getElementById('hamburger');
-    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+    if (menu && hamburger && !menu.contains(e.target) && !hamburger.contains(e.target)) {
       menu.classList.remove('open');
     }
   });
