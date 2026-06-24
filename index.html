@@ -1099,10 +1099,10 @@
       <h2 class="s-title">Your free smile assessment<br><span class="gold">starts here.</span></h2>
       <p class="s-sub">No commitment. No pressure. Just a conversation about what's possible for you.</p>
       <div class="form-fields">
-        <input type="text" placeholder="First name">
-        <input type="email" placeholder="Email address">
-        <input type="tel" placeholder="Phone number">
-        <button class="btn-form">Get my free assessment →</button>
+        <input type="text" id="leadFirstName" placeholder="First name">
+        <input type="email" id="leadEmail" placeholder="Email address">
+        <input type="tel" id="leadPhone" placeholder="Phone number">
+        <button class="btn-form" id="leadSubmitBtn" onclick="submitLeadForm()">Get my free assessment →</button>
       </div>
       <p class="form-note">We'll reach out on WhatsApp or by email within the next few minutes.</p>
       <div class="form-reassure">
@@ -1268,6 +1268,46 @@
     });
   });
   document.querySelectorAll('.faq-a').forEach(a => a.style.display = 'none');
+
+  // Lead form submission to Make webhook
+  async function submitLeadForm() {
+    const firstName = document.getElementById('leadFirstName').value.trim();
+    const email = document.getElementById('leadEmail').value.trim();
+    const phone = document.getElementById('leadPhone').value.trim();
+    const btn = document.getElementById('leadSubmitBtn');
+
+    if (!firstName || !email || !phone) {
+      alert('Please fill in all fields before submitting.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    try {
+      const response = await fetch('https://hook.us2.make.com/5hfepr1ucxgj7zvzxc2wv1sae6ude7d0', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: firstName,
+          email: email,
+          phone: phone,
+          source: 'website_form',
+          submittedAt: new Date().toISOString()
+        })
+      });
+
+      if (response.ok) {
+        window.location.href = '/thank-you.html';
+      } else {
+        throw new Error('Webhook response not OK');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Get my free assessment →';
+      alert('Something went wrong. Please try again or contact us directly.');
+    }
+  }
 </script>
 </body>
 </html>
