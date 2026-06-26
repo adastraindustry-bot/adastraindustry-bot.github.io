@@ -1269,6 +1269,16 @@
   });
   document.querySelectorAll('.faq-a').forEach(a => a.style.display = 'none');
 
+  // Detect acquisition source from UTM parameters in the URL
+  function getAcquisitionSource() {
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = (params.get('utm_source') || '').toLowerCase();
+
+    if (utmSource.includes('google')) return 'Google Ads';
+    if (utmSource.includes('meta') || utmSource.includes('facebook') || utmSource.includes('instagram')) return 'Meta Ads';
+    return 'Organic';
+  }
+
   // Lead form submission to Make webhook
   async function submitLeadForm() {
     const firstName = document.getElementById('leadFirstName').value.trim();
@@ -1292,7 +1302,7 @@
           firstName: firstName,
           email: email,
           phone: phone,
-          source: 'website_form',
+          source: getAcquisitionSource(),
           submittedAt: new Date().toISOString()
         })
       });
